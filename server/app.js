@@ -11,7 +11,7 @@ require('dotenv').config()
 
 const mongoose = require('mongoose')
 var NODE_ENV = process.env.NODE_ENV
-mongoose.connect(`mongodb://localhost:27017/hacktiv_flow_${NODE_ENV}`, { useNewUrlParser: true })
+mongoose.connect(`mongodb://localhost:27017/baru_flow_${NODE_ENV}`, { useNewUrlParser: true })
 const cors = require('cors')
 
 app.use(cors())

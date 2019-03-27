@@ -1,21 +1,21 @@
 <template>
   <v-container>
-    <v-layout row wrap>
+    <v-layout justify-content-start row wrap>
       <v-flex my-2 class="elevation-12" xs12 v-for="(question,index) in questions" :key="index">
         <v-card>
           <v-layout>
             <v-flex xs1>
-              <v-layout fill-height align-center justify-content-center row wrap>
+              <v-layout fill-height align-center justify-content-start row wrap>
                 <v-btn flat color="blue">Vote<br><br>{{question.upvotes.length - question.downvotes.length}}</v-btn>
               </v-layout>
             </v-flex>
             <v-flex xs1>
-              <v-layout fill-height align-center justify-content-center row wrap>
+              <v-layout fill-height align-center justify-content-start row wrap>
                 <v-btn flat color="blue">Answer<br><br>{{question.answers.length}}</v-btn>
               </v-layout>
             </v-flex>
-            <v-flex xs9>
-              <v-layout>
+            <v-flex xs6>
+              <v-layout fill-height align-center justify-content-start row wrap>
                 <v-card-title primary-title>
                   <div>
                     <h3 class="headline mb-0">
@@ -26,6 +26,13 @@
                     <span class="grey--text">{{question.createdBy.name}}</span>
                   </div>
                 </v-card-title>
+              </v-layout>
+            </v-flex>
+            <v-flex xs3>
+              <v-layout fill-height align-center justify-content-start row wrap >
+                <v-btn v-for="tag in question.tags" :key="tag._id">
+                  {{tag.name}}
+                </v-btn>
               </v-layout>
             </v-flex>
             <v-flex xs1>
@@ -45,7 +52,7 @@
 </template>
 
 <script>
-import axios from "@/api/axios.js";
+// import axios from "@/api/axios.js";
 import editform from "@/components/EditForm.vue"
 export default {
   components: {
@@ -63,7 +70,6 @@ export default {
     goToQuestion(id) {
       this.$store.dispatch("goToQuestion", id);
       this.redirectQuestion(id);
-      // kdfkdsksf
     },
     redirectQuestion(id) {
       this.$router.push({ path: `/question/${id}` });

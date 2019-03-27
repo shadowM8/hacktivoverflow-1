@@ -22,8 +22,13 @@ export default new Vuex.Store({
       createdBy: {
         name: ''
       },
+      tags:[],
       answers: []
-    }
+    },
+    userLogin: {
+      watchedTags : []
+    },
+    watchedQuestion: []
   },
   mutations: {
     mutateUserName(state,payload) {
@@ -45,16 +50,83 @@ export default new Vuex.Store({
       state.isLogin = payload
     },
     mutateOneQuestion(state, payload) {
-      state.oneQuestion = payload
+      // state.oneQuestion = payload
+      let tag = ''
+      let satuPertanyaan = {
+        _id: '',
+        upvotes: [],
+        downvotes: [],
+        title: '',
+        description: '',
+        createdBy: {
+          name: ''
+        },
+        tags:[],
+        answers: []
+      }
+      
+      for(let key in satuPertanyaan) {
+        if(key === 'tags') {
+          payload.tags.forEach(e => {
+            console.log('eeee',e)
+            tag = e.name
+            satuPertanyaan.tags.push({
+              text: tag,
+              tiClasses: ['ti-valid']
+            })
+            tag = ''
+          })
+        }
+        else {
+          satuPertanyaan[key] = payload[key]
+        }
+      }
+      state.oneQuestion = satuPertanyaan
     },
-    clearOneQuestion(state) {
-      state.oneQuestion = {}
-    },
+    // clearOneQuestion(state) {
+    //   state.oneQuestion = {}
+    // },
     mutateErrorMessage(state, payload) {
       state.errorMessage = payload
+    },
+    mutateUserLogin(state, payload) {
+      state.userLogin = payload
+    },
+    initialWatchedQuestion(state, payload) {
+      state.watchedQuestion = payload
     }
   },
   actions: {
+    getWatchedQuestion(context) {
+      axios({
+        url: `/users/see-watched-tags`,
+        method: 'get',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({data}) => {
+          console.log('ini watched question',data)
+          context.commit('initialWatchedQuestion', data)
+        })
+    },
+    getUserInfo(context){
+      axios({
+        url: `/users/user-info`,
+        method: 'get',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({data}) => {
+          context.commit('mutateUserLogin', {
+            id: data._id, name : data.name, watchedTags: data.watchedTags
+          })
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     editAnswer(context, payload) {
       axios({
         url: `answers/${payload.id}`,
@@ -81,7 +153,8 @@ export default new Vuex.Store({
         method: 'put',
         data: {
           title: payload.title,
-          description : payload.description
+          description : payload.description,
+          tags: payload.tags
         },
         headers: {
           token: localStorage.token
@@ -290,7 +363,7 @@ export default new Vuex.Store({
       axios
         .get('/questions')
         .then(({ data }) => {
-          console.log(data)
+          console.log('ini all question',data)
           context.commit('initialQuestions', data)
         })
         .catch(err => {
@@ -312,9 +385,12 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response.data.modelValidation)
+          let error = ''
+          if(err.response.data.modelValidation) error = err.response.data.modelValidation.join(', ')
+          else error = err.response.data.message
           swal({
             title: "Register failed",
-            text: `${err.response.data.modelValidation.join(', ')}`,
+            text: `${error}`,
             icon: "warning",
             button: "retry register",
           });
@@ -330,6 +406,7 @@ export default new Vuex.Store({
           localStorage.setItem('username', data.name)
           context.commit('mutateUserName', data.name)
           context.commit('mutateIsLogin', true)
+          context.dispatch('getUserInfo')
           router.push( "/" )
         })
         .catch(err => {
@@ -360,6 +437,7 @@ export default new Vuex.Store({
             context.commit('mutateIsLogin', false)
             context.commit('mutateUserName', null)
             localStorage.clear()
+            router.push('/dashboard')
           }
           else {
             swal("Enjoy your time in mini overflow");

@@ -18,7 +18,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
-      this.redirect()
+      // this.redirect()
     },
     redirect(){
         this.$router.push({ path: "/dashboard" })

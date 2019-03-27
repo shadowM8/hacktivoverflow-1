@@ -9,7 +9,11 @@ import wysiwyg from "vue-wysiwyg";
 
 
 Vue.use(wysiwyg, {}); // config is optional. more below
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#00ACC1'
+  }
+})
 
 Vue.config.productionTip = false
 

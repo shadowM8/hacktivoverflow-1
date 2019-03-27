@@ -38,6 +38,7 @@ module.exports = {
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password,
+                // watchedTags: req.body.watchedTags.map(e => e.text)
             })
             .then(createResult => {
                 let userId = createResult._id
@@ -69,6 +70,23 @@ module.exports = {
                 // res.status(500).json(err)
             })
     },
+    getProfile(req, res) {
+        User
+            .findById(req.user.id)
+            .then(user => {
+                res 
+                    .status(200)
+                    .json(user)
+            })
+            .catch(err => {
+                res 
+                    .status(500)
+                    .json({
+                        msg: `Internal server error`,
+                        err                        
+                    })
+            })
+    },
     findAll: function (req, res) {
         User
             .find({})
@@ -82,7 +100,7 @@ module.exports = {
     seeWatchedTags: function (req, res) {
         let questionSuggestions = []
         User
-            .findById(req.decoded.id)
+            .findById(req.user.id)
             .then(user => {
                 let findTag = []
                 user.watchedTags.forEach(wT => {
@@ -127,5 +145,33 @@ module.exports = {
                     })
             })
 
+    },
+    editwatchedTags(req, res) {
+        console.log('abc',req.body)
+        User
+            .updateOne({
+                _id: req.user.id
+            }, {
+                watchedTags: req.body.tags.map(e => e.text)
+            }, {
+                new: true
+            })
+            .then((data) => {
+                console.log('masuk',data)
+                res
+                    .status(200)
+                    .json({
+                        msg: `Tags updated`
+                    })
+            })
+            .catch(err => {
+                res 
+                    .status(500)
+                    .json({
+                        msg: `Internal server error`,
+                        err                        
+                    })
+            })
     }
+
 }

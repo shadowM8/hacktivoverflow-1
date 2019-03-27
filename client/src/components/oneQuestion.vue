@@ -21,11 +21,12 @@
                   <h3 class="headline mb-0">
                     <b>{{question.title}}</b>
                   </h3>
-                  <span class="grey--text">{{question.createdBy.name}}</span>
+                  <span class="grey--text">{{question.createdBy.name}}| Tag</span>
+                  <span v-for="tag in question.tags" :key="tag._id" class="blue--text">{{tag.text}} | </span>
                 </div>
               </v-card-title>
               <v-card-text>
-                <div align-content-justify>{{ question.description }}</div>
+                <div align-content-justify v-html="question.description"></div>
               </v-card-text>
               <v-card-actions v-if="userId === question.createdBy._id">
                 <v-dialog v-model="dialog">
@@ -50,12 +51,13 @@
                   type="text"
                   v-model="title"
                 ></v-text-field>
-                <v-textarea
+                <!-- <v-textarea
                   v-model="description"
                   prepend-icon="not_listed_location"
                   label="Your Answer here"
                   rows="2"
-                ></v-textarea>
+                ></v-textarea> -->
+                <div><wysiwyg  v-model="description" /></div>
                 <v-btn type="submit" color="primary">Submit</v-btn>
               </form>
             </v-flex>
@@ -162,4 +164,5 @@ export default {
 </script>
 
 <style>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
 </style>

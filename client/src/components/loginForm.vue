@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "loginForm",
+  name: "LoginForm",
   data: function() {
     return {
       email: "",

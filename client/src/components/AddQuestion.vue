@@ -16,7 +16,7 @@
                 @tags-changed="newTags => tags = newTags"
               />
             </div>
-            <div><wysiwyg v-model="description" /></div>
+            <div><wysiwyg  v-model="description" /></div>
             <v-btn type="submit" color="primary">Submit</v-btn>
           </form>
         </v-card-text>
@@ -30,6 +30,7 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
+
 export default {
   name: "AddQuestion",
   components: {
@@ -61,4 +62,5 @@ export default {
 </script>
 
 <style>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
 </style>

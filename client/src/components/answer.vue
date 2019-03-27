@@ -34,12 +34,12 @@
                 <v-card-text>{{answer.description}}</v-card-text>
               </v-layout>
             </v-flex>
-            <v-flex xs1>
+            <v-flex xs2>
               <v-layout fill-height align-center>
                 <editanswer :answer="answer" />
               </v-layout>
             </v-flex>
-            <v-flex xs1>
+            <!-- <v-flex xs1>
               <v-layout fill-height align-center>
                 <div v-if="userId === answer.createdBy._id">
                   <a @click="deleteAnswer(answer._id)">
@@ -47,7 +47,7 @@
                   </a>
                 </div>
               </v-layout>
-            </v-flex>
+            </v-flex> -->
           </v-layout>
         </v-card>
       </v-flex>

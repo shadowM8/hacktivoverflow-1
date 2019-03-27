@@ -2,14 +2,15 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config
 
 function auth(req,res,next){
-    console.log(req.headers.token)
+    // console.log(req.headers.token)
     try {
         const decoded = jwt.verify(req.headers.token, process.env.JWT_SECRET)
         req.user = {
             id : decoded.id,
             email : decoded.email
         }
-        console.log(req.user)
+        // console.log(req.user)
+        // console.log(req.body)
         next()
     }
     catch (error){
