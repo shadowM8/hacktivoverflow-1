@@ -8,7 +8,7 @@
         pa-3
         blue--text
       >
-        <div v-if="!isLogin" class="title font-weight-light" ><v-btn class="elevation-12" :to="{ path: '/dashboard/'}">Login</v-btn> first if you want to ask questions</div>
+        <div v-if="!isLogin" class="title font-weight-light" ><v-btn class="primary elevation-12" :to="{ path: '/dashboard/'}">Login</v-btn> first if you want to ask questions</div>
       </v-layout>
     <router-view/>
   </div>

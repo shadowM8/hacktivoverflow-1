@@ -84,3 +84,10 @@ export default {
 };
 </script>
 
+<style>
+.ti-input{
+  background-color:gray
+}
+</style>
+
+

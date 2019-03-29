@@ -4,25 +4,25 @@
       <v-flex my-2 class="elevation-12" xs12>
         <v-card>
           <v-layout>
-            <v-flex>
+            <v-flex xs2>
               <v-layout fill-height align-center justify-content-center row wrap>
                 <v-btn @click="upVoteThisQuestion(question)" flat :style="{color:upvoteColor}">
                   <v-icon>expand_less</v-icon>
                 </v-btn>
-                <v-btn flat color="red">{{question.upvotes.length - question.downvotes.length}}</v-btn>
+                <v-btn flat color="red">SCORE :{{question.upvotes.length - question.downvotes.length}}</v-btn>
                 <v-btn @click="downVoteThisQuestion(question)" flat :style="{color:downvoteColor}">
                   <v-icon>expand_more</v-icon>
                 </v-btn>
               </v-layout>
             </v-flex>
-            <v-flex>
+            <v-flex xs10>
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">
                     <b>{{question.title}}</b>
                   </h3>
                   <span class="grey--text">{{question.createdBy.name}}| Tag</span>
-                  <span v-for="tag in question.tags" :key="tag._id" class="blue--text">{{tag.text}} | </span>
+                  <v-btn round v-for="tag in question.tags" :key="tag._id" class="success">{{tag.text}}  </v-btn>
                 </div>
               </v-card-title>
               <v-card-text>

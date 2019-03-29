@@ -30,7 +30,7 @@
             </v-flex>
             <v-flex xs3>
               <v-layout fill-height align-center justify-content-start row wrap >
-                <v-btn v-for="tag in question.tags" :key="tag._id">
+                <v-btn round class="success" v-for="tag in question.tags" :key="tag._id">
                   {{tag.name}}
                 </v-btn>
               </v-layout>

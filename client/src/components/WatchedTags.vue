@@ -1,5 +1,5 @@
 <template>
-  <div class="vh-90" style="overflow-y: scroll;">
+  <div class="vh-100" style="overflow-y: scroll;">
     <h3>Questions that you tagged.</h3>
     <vue-tags-input
       v-model="tag"
@@ -12,60 +12,67 @@
       <hr>
       <img src="https://static.wubook.net/shstatic/imgs/cloading.gif" alt>
     </div>
-    <div v-else class="mt-3" v-for="q in watchedQuestion" :key="q.id">
-      <v-card>
-        <v-layout>
-          <v-flex xs1>
-            <v-layout fill-height align-center justify-content-start row wrap>
-              <v-btn flat color="blue">
-                Vote
-                <br>
-                <br>
-                {{q.upvotes.length - q.downvotes.length}}
-              </v-btn>
-            </v-layout>
-          </v-flex>
-          <v-flex xs1>
-            <v-layout fill-height align-center justify-content-start row wrap>
-              <v-btn flat color="blue">
-                Answer
-                <br>
-                <br>
-                {{q.answers.length}}
-              </v-btn>
-            </v-layout>
-          </v-flex>
-          <v-flex xs6>
-            <v-layout fill-height align-center justify-content-start row wrap>
-              <v-card-title primary-title>
-                <div>
-                  <h3 class="headline mb-0">
-                    <a @click="goToQuestion(q._id)">
-                      <b>{{q.title}}</b>
-                    </a>
-                  </h3>
-                  <span class="grey--text">{{q.createdBy.name}}</span>
+    <v-layout v-else justify-content-start row wrap>
+      <v-flex my-2 class="elevation-12 mt-4" v-for="question in watchedQuestion" :key="question.id">
+        <v-card>
+          <v-layout>
+            <v-flex xs1>
+              <v-layout fill-height align-center justify-content-start row wrap>
+                <v-btn flat color="blue">
+                  Vote
+                  <br>
+                  <br>
+                  {{question.upvotes.length - question.downvotes.length}}
+                </v-btn>
+              </v-layout>
+            </v-flex>
+            <v-flex xs1>
+              <v-layout fill-height align-center justify-content-start row wrap>
+                <v-btn flat color="blue">
+                  Answer
+                  <br>
+                  <br>
+                  {{question.answers.length}}
+                </v-btn>
+              </v-layout>
+            </v-flex>
+            <v-flex xs6>
+              <v-layout fill-height align-center justify-content-start row wrap>
+                <v-card-title primary-title>
+                  <div>
+                    <h3 class="headline mb-0">
+                      <a @click="goToQuestion(question._id)">
+                        <b>{{question.title}}</b>
+                      </a>
+                    </h3>
+                    <span class="grey--text">{{question.createdBy.name}}</span>
+                  </div>
+                </v-card-title>
+              </v-layout>
+            </v-flex>
+            <v-flex xs3>
+              <v-layout fill-height align-center justify-content-start row wrap>
+                <v-btn
+                  round
+                  class="success"
+                  v-for="tag in question.tags"
+                  :key="tag._id"
+                >{{tag.name}}</v-btn>
+              </v-layout>
+            </v-flex>
+            <v-flex xs1>
+              <v-layout fill-height align-center>
+                <div v-if="userId === question.createdBy._id">
+                  <a @click="deleteQuestion(question._id)">
+                    <v-icon>delete</v-icon>
+                  </a>
                 </div>
-              </v-card-title>
-            </v-layout>
-          </v-flex>
-          <v-flex xs3>
-            <v-layout fill-height align-center justify-content-start row wrap>
-              <v-btn v-for="tag in q.tags" :key="tag._id">{{tag.name}}</v-btn>
-            </v-layout>
-          </v-flex>
-          <v-flex xs1>
-            <v-layout fill-height align-center>
-              <div v-if="userId === q.createdBy._id">
-                <a @click="deleteQuestion(q._id)">
-                  <v-icon>delete</v-icon>
-                </a>
-              </div>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-card>
-    </div>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -91,7 +98,7 @@ export default {
       loading: false,
       add: [],
       reduce: [],
-      userId: localStorage.getItem("id"),
+      userId: localStorage.getItem("id")
     };
   },
   computed: mapState(["watchedQuestion"]),
